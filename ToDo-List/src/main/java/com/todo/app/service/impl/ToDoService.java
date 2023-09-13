@@ -35,13 +35,26 @@ public class ToDoService implements IToDoService{
 	@Override
 	public String createToDo() {
 		Tasks task = new Tasks();
+		task.setTaskName(task.getTaskName());
+		task.setDescription(task.getDescription());
+		task.setPriority(task.getPriority());
+		task.setStatus(task.getStatus());
 		task.setCreatedTimestamp(LocalDateTime.now());
+		
+		if(task.getTargetTimestamp()!=null)
+			task.setTargetTimestamp(task.getTargetTimestamp());
+		
 		return null;
 	}
 
 	@Override
 	public ToDoDto updateToDo(int id, ToDoDto toDo) {
 		Optional<Tasks> task = taskRepo.findById(id);
+		task.get().setTaskName(task.get().getTaskName());
+		task.get().setDescription(task.get().getDescription());
+		task.get().setPriority(task.get().getPriority());
+		task.get().setStatus(task.get().getStatus());
+		task.get().setUpdatedTimestamp(LocalDateTime.now());
 		
 		if(task.isPresent()) {
 			task.get().setUpdatedTimestamp(LocalDateTime.now());
@@ -52,8 +65,14 @@ public class ToDoService implements IToDoService{
 
 	@Override
 	public String deleteToDo(int id) {
+		Optional<Tasks> task = taskRepo.findById(id);
 		
-		return null;
+		if(task.isPresent()) {
+			taskRepo.deleteById(id);
+			return "The user has been deleted";
+		}
+			
+		return "The user does not exist";
 	}
 
 
