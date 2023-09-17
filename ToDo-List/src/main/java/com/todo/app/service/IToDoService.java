@@ -11,7 +11,7 @@ public interface IToDoService {
 	
 	public ToDoDto getToDo(int id);
 	
-	public String createToDo();
+	public String createToDo(ToDoDto toDto);
 	
 	public ToDoDto updateToDo(int id, ToDoDto toDo);
 	

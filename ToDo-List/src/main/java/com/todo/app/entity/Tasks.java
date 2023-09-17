@@ -17,7 +17,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table//(indexes = @Index(name = "idx_task_category", columnList = "category_id"))
+@Table(indexes = @Index(name = "idx_task_category", columnList = "id"))
 public class Tasks implements Serializable {
 
 	/**

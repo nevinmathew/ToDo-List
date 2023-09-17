@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.todo.app.dto.ToDoDto;
 import com.todo.app.entity.Tasks;
+import com.todo.app.entity.enums.Priority;
+import com.todo.app.entity.enums.Status;
 import com.todo.app.repository.TaskRepository;
 import com.todo.app.service.IToDoService;
 
@@ -33,16 +35,33 @@ public class ToDoService implements IToDoService{
 	}
 
 	@Override
-	public String createToDo() {
+	public String createToDo(ToDoDto toDo) {
 		Tasks task = new Tasks();
-		task.setTaskName(task.getTaskName());
-		task.setDescription(task.getDescription());
-		task.setPriority(task.getPriority());
-		task.setStatus(task.getStatus());
+		task.setTaskName(toDo.getTaskName());
+		task.setDescription(toDo.getDescription());
+		
+		switch(toDo.getPriority().toLowerCase()) {
+			case "low":
+				task.setPriority(Priority.low.name());
+			case "medium":
+				task.setPriority(Priority.medium.name());
+			case "high":
+				task.setPriority(Priority.high.name());
+		}
+		
+		switch(toDo.getStatus().toLowerCase()){
+			case "pending":
+				task.setStatus(Status.pending.name());
+			case "inprogress":
+				task.setStatus(Status.inProgress.name());
+			case "completed":
+				task.setStatus(Status.completed.name());
+		}
+		
 		task.setCreatedTimestamp(LocalDateTime.now());
 		
 		if(task.getTargetTimestamp()!=null)
-			task.setTargetTimestamp(task.getTargetTimestamp());
+			task.setTargetTimestamp(toDo.getTargetTimestamp());
 		
 		return null;
 	}
@@ -50,11 +69,31 @@ public class ToDoService implements IToDoService{
 	@Override
 	public ToDoDto updateToDo(int id, ToDoDto toDo) {
 		Optional<Tasks> task = taskRepo.findById(id);
-		task.get().setTaskName(task.get().getTaskName());
-		task.get().setDescription(task.get().getDescription());
-		task.get().setPriority(task.get().getPriority());
-		task.get().setStatus(task.get().getStatus());
+		task.get().setTaskName(toDo.getTaskName());
+		task.get().setDescription(toDo.getDescription());
+		
+		switch(toDo.getPriority().toLowerCase()) {
+		case "low":
+			task.get().setPriority(Priority.low.name());
+		case "medium":
+			task.get().setPriority(Priority.medium.name());
+		case "high":
+			task.get().setPriority(Priority.high.name());
+		}
+		
+		switch(toDo.getStatus().toLowerCase()){
+			case "pending":
+				task.get().setStatus(Status.pending.name());
+			case "inprogress":
+				task.get().setStatus(Status.inProgress.name());
+			case "completed":
+				task.get().setStatus(Status.completed.name());
+		}
+	
 		task.get().setUpdatedTimestamp(LocalDateTime.now());
+		
+		if(task.get().getTargetTimestamp()!=null)
+			task.get().setTargetTimestamp(toDo.getTargetTimestamp());
 		
 		if(task.isPresent()) {
 			task.get().setUpdatedTimestamp(LocalDateTime.now());
