@@ -3,13 +3,14 @@ package com.todo.app.service;
 import java.util.List;
 
 import com.todo.app.dto.ToDoDto;
+import com.todo.app.repository.projections.ToDoProjection;
 
 
 public interface IToDoService {
 
-	public List<ToDoDto> showToDos();
+	public List<ToDoProjection> showToDos();
 	
-	public ToDoDto getToDo(int id);
+	public ToDoProjection getToDo(int id);
 	
 	public String createToDo(ToDoDto toDto);
 	

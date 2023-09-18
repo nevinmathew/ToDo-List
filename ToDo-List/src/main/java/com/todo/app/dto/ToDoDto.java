@@ -2,7 +2,7 @@ package com.todo.app.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -30,10 +30,31 @@ public class ToDoDto implements Serializable {
 
 	private String status;
 	
-	@JsonIgnore
 	private int categoryId;
 
 	private String categoryName;
+	
+	public ToDoDto(int taskId, 
+			String taskName, 
+			String description, 
+			LocalDateTime createdTimestamp,
+			LocalDateTime updatedTimestamp, 
+			LocalDateTime targetTimestamp, 
+			String priority, 
+			String status,
+			int categoryId, 
+			String categoryName) {
+		this.taskId = taskId;
+		this.taskName = taskName;
+		this.description = description;
+		this.createdTimestamp = createdTimestamp;
+		this.updatedTimestamp = updatedTimestamp;
+		this.targetTimestamp = targetTimestamp;
+		this.priority = priority;
+		this.status = status;
+		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+	}
 
 	public int getTaskId() {
 		return taskId;

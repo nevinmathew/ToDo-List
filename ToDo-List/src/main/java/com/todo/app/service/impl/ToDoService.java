@@ -1,6 +1,7 @@
 package com.todo.app.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import com.todo.app.entity.Tasks;
 import com.todo.app.entity.enums.Priority;
 import com.todo.app.entity.enums.Status;
 import com.todo.app.repository.TaskRepository;
+import com.todo.app.repository.projections.ToDoProjection;
 import com.todo.app.service.IToDoService;
 
 @Service
@@ -21,17 +23,17 @@ public class ToDoService implements IToDoService{
 	TaskRepository taskRepo;
 	
 	@Override
-	public List<ToDoDto> showToDos() { //use projection to set the data from a custom query to the dto with json body
-		List<Tasks> tasks = taskRepo.findAll();
+	public List<ToDoProjection> showToDos() {
+		List<ToDoProjection> tasks = taskRepo.findAllTasks();
 		
-		return null;
+		return tasks.isEmpty() ? Collections.emptyList() : tasks;
 	}
 
 	@Override
-	public ToDoDto getToDo(int id) {
-		Optional<Tasks> task = taskRepo.findById(id);
+	public ToDoProjection getToDo(int id) {
+		Optional<ToDoProjection> task = taskRepo.findTodoById(id);
 		
-		return null;
+		return task.isPresent() ? task.get() : null;
 	}
 
 	@Override
@@ -40,30 +42,35 @@ public class ToDoService implements IToDoService{
 		task.setTaskName(toDo.getTaskName());
 		task.setDescription(toDo.getDescription());
 		
-		switch(toDo.getPriority().toLowerCase()) {
-			case "low":
-				task.setPriority(Priority.low.name());
-			case "medium":
-				task.setPriority(Priority.medium.name());
-			case "high":
-				task.setPriority(Priority.high.name());
-		}
+		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty())
+			switch(toDo.getPriority().toLowerCase()) {
+				case "low":
+					task.setPriority(Priority.low.name());
+				case "medium":
+					task.setPriority(Priority.medium.name());
+				case "high":
+					task.setPriority(Priority.high.name());
+			}
 		
-		switch(toDo.getStatus().toLowerCase()){
-			case "pending":
-				task.setStatus(Status.pending.name());
-			case "inprogress":
-				task.setStatus(Status.inProgress.name());
-			case "completed":
-				task.setStatus(Status.completed.name());
-		}
+		if(toDo.getStatus()!=null && !toDo.getStatus().isEmpty())
+			switch(toDo.getStatus().toLowerCase()){
+				case "pending":
+					task.setStatus(Status.pending.name());
+				case "inprogress":
+					task.setStatus(Status.inProgress.name());
+				case "completed":
+					task.setStatus(Status.completed.name());
+			}
 		
 		task.setCreatedTimestamp(LocalDateTime.now());
 		
 		if(task.getTargetTimestamp()!=null)
 			task.setTargetTimestamp(toDo.getTargetTimestamp());
 		
-		return null;
+//		task.setCategory(toDo.getCategoryId());
+		
+		taskRepo.save(task);
+		return "The toDo has been created.";
 	}
 
 	@Override
@@ -72,34 +79,42 @@ public class ToDoService implements IToDoService{
 		task.get().setTaskName(toDo.getTaskName());
 		task.get().setDescription(toDo.getDescription());
 		
-		switch(toDo.getPriority().toLowerCase()) {
-		case "low":
-			task.get().setPriority(Priority.low.name());
-		case "medium":
-			task.get().setPriority(Priority.medium.name());
-		case "high":
-			task.get().setPriority(Priority.high.name());
-		}
+		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty())
+			switch(toDo.getPriority().toLowerCase()) {
+				case "low":
+					task.get().setPriority(Priority.low.name());
+					toDo.setPriority(Priority.low.name());
+				case "medium":
+					task.get().setPriority(Priority.medium.name());
+					toDo.setPriority(Priority.medium.name());
+				case "high":
+					task.get().setPriority(Priority.high.name());
+					toDo.setPriority(Priority.high.name());
+			}
 		
-		switch(toDo.getStatus().toLowerCase()){
-			case "pending":
-				task.get().setStatus(Status.pending.name());
-			case "inprogress":
-				task.get().setStatus(Status.inProgress.name());
-			case "completed":
-				task.get().setStatus(Status.completed.name());
-		}
+		if(toDo.getStatus()!=null && !toDo.getStatus().isEmpty())
+			switch(toDo.getStatus().toLowerCase()){
+				case "pending":
+					task.get().setStatus(Status.pending.name());
+					toDo.setStatus(Status.pending.name());
+				case "inprogress":
+					task.get().setStatus(Status.inProgress.name());
+					toDo.setStatus(Status.inProgress.name());
+				case "completed":
+					task.get().setStatus(Status.completed.name());
+					toDo.setStatus(Status.completed.name());
+			}
 	
-		task.get().setUpdatedTimestamp(LocalDateTime.now());
-		
 		if(task.get().getTargetTimestamp()!=null)
 			task.get().setTargetTimestamp(toDo.getTargetTimestamp());
 		
 		if(task.isPresent()) {
 			task.get().setUpdatedTimestamp(LocalDateTime.now());
+			toDo.setUpdatedTimestamp(task.get().getUpdatedTimestamp());
 		}
 		
-		return null;
+		taskRepo.save(task.get());
+		return toDo;
 	}
 
 	@Override
@@ -111,7 +126,7 @@ public class ToDoService implements IToDoService{
 			return "The user has been deleted";
 		}
 			
-		return "The user does not exist";
+		return "This user does not exist";
 	}
 
 
