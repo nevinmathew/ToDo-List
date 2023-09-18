@@ -125,7 +125,7 @@ public class ToDoService implements IToDoService{
 			taskRepo.deleteById(id);
 			return "The user has been deleted";
 		}
-			
+
 		return "This user does not exist";
 	}
 
