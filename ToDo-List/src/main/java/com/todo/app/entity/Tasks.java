@@ -51,10 +51,10 @@ public class Tasks implements Serializable {
 	private LocalDateTime targetTimestamp; //for reminders
 	
 	@Column
-	private String priority; //enum: low, medium, high
+	private String priority; //priority enum: low, medium, high
 	
 	@Column
-	private String status; //pending, in progress, completed
+	private String status; //status enum: pending, in progress, completed
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="category_id")

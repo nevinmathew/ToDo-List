@@ -138,10 +138,17 @@ public class ToDoDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ToDoDto [taskId=" + taskId + ", taskName=" + taskName + ", description=" + description
-				+ ", createdTimestamp=" + createdTimestamp + ", updatedTimestamp=" + updatedTimestamp
-				+ ", targetTimestamp=" + targetTimestamp + ", priority=" + priority + ", status=" + status
-				+ ", categoryId=" + categoryId + ", categoryName=" + categoryName + "]";
+		return "ToDoDto [taskId=" + taskId 
+				+ ", taskName=" + taskName 
+				+ ", description=" + description
+				+ ", createdTimestamp=" + createdTimestamp 
+				+ ", updatedTimestamp=" + updatedTimestamp
+				+ ", targetTimestamp=" + targetTimestamp 
+				+ ", priority=" + priority 
+				+ ", status=" + status
+				+ ", categoryId=" + categoryId 
+				+ ", categoryName=" + categoryName 
+				+ "]";
 	}
 	
 	
