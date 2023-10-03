@@ -1,0 +1,55 @@
+# Ignore IDE and editor-specific files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.classpath
+*.project
+*.settings/
+*.metadata/
+*.class
+
+# Ignore build and target directories
+/target/
+/build/
+
+# Ignore generated files
+*.jar
+*.war
+*.ear
+*.log
+
+# Ignore application properties files (you might need to adjust this based on your naming convention)
+application*.yml
+application*.properties
+
+# Ignore spring-boot-starter-logging configuration
+logback-spring.xml
+
+# Ignore Maven and Gradle specific files
+mvnw
+mvnw.cmd
+gradle-wrapper.properties
+/.gradle/
+
+# Ignore OS and text editor backup files
+*~
+*.swp
+.DS_Store
+
+# Ignore generated documentation
+/doc/
+
+# Ignore test reports
+/test-output/
+
+# Ignore Eclipse-specific files
+.classpath
+.project
+
+# Ignore IntelliJ IDEA-specific files
+.idea/
+
+# Ignore Visual Studio Code-specific files
+.vscode/
