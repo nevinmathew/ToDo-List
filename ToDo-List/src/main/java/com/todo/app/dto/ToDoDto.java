@@ -23,36 +23,36 @@ public class ToDoDto implements Serializable {
 	 */
 	private static final long serialVersionUID = -8863390563653358670L;
 	
-	@NotNull(message = "Task ID must not be null")
+	@NotNull(message = "Task ID must not be null") 
 	private int taskId;
 
-	@NotBlank(message = "Task name is required")
-    @Size(min = 1, max = 255, message = "Task name must be between 1 and 255 characters")
+	@NotBlank(message = "Task name is required") 
+    @Size(min = 1, max = 255, message = "Task name must be between 1 and 255 characters") 
     private String taskName;
 
-	@Size(max = 1000, message = "Description can have a maximum of 1000 characters")
+	@Size(max = 1000, message = "Description can have a maximum of 1000 characters") 
     private String description;
 
-	@NotNull(message = "Created timestamp must not be null")
+	@NotNull(message = "Created timestamp must not be null") 
     private LocalDateTime createdTimestamp;
 
-	@NotNull(message = "Updated timestamp must not be null")
+	@NotNull(message = "Updated timestamp must not be null") 
     private LocalDateTime updatedTimestamp;
 
-    @NotNull(message = "Target timestamp must not be null")
+    @NotNull(message = "Target timestamp must not be null") 
     private LocalDateTime targetTimestamp;
 
-    @Pattern(regexp = "low|medium|high", message = "Priority must be 'low', 'medium', or 'high'")
+    @Pattern(regexp = "low|medium|high", message = "Priority must be 'low', 'medium', or 'high'") 
     private String priority;
 
-    @Pattern(regexp = "pending|in progress|completed", message = "Status must be 'pending', 'in progress', or 'completed'")
+    @Pattern(regexp = "pending|in progress|completed", message = "Status must be 'pending', 'in progress', or 'completed'") 
     private String status;
 
-    @NotNull(message = "Category ID must not be null")
+    @NotNull(message = "Category ID must not be null") 
     private int categoryId;
 
-    @NotBlank(message = "Category name is required")
-    @Size(min = 1, max = 255, message = "Category name must be between 1 and 255 characters")
+    @NotBlank(message = "Category name is required") 
+    @Size(min = 1, max = 255, message = "Category name must be between 1 and 255 characters") 
     private String categoryName;
 	
     /**
@@ -96,7 +96,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setTaskName(String taskName) {
-	    this.taskName = HtmlUtils.htmlEscape(taskName);
+	    this.taskName = HtmlUtils.htmlEscape(taskName); 
 	}
 
 	public String getDescription() {
@@ -104,7 +104,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setDescription(String description) {
-	    this.description = HtmlUtils.htmlEscape(description);
+	    this.description = HtmlUtils.htmlEscape(description); 
 	}
 
 	public LocalDateTime getCreatedTimestamp() {
@@ -136,7 +136,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setPriority(String priority) {
-	    this.priority = HtmlUtils.htmlEscape(priority);
+	    this.priority = HtmlUtils.htmlEscape(priority); 
 	}
 
 	public String getStatus() {
@@ -144,7 +144,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setStatus(String status) {
-	    this.status = HtmlUtils.htmlEscape(status);
+	    this.status = HtmlUtils.htmlEscape(status); 
 	}
 
 	public int getCategoryId() {
@@ -160,7 +160,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setCategoryName(String categoryName) {
-	    this.categoryName = HtmlUtils.htmlEscape(categoryName);
+	    this.categoryName = HtmlUtils.htmlEscape(categoryName); 
 	}
 
 

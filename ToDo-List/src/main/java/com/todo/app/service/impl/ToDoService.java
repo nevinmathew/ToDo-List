@@ -109,7 +109,7 @@ public class ToDoService implements IToDoService{
 	 * @return The updated ToDoDto object.
 	 */
 	@Override
-	@Transactional
+	@Transactional 
 	@Operation(summary = "Update a ToDo by ID")
 	public ToDoDto updateToDo(int id, ToDoDto toDo) { 
         
