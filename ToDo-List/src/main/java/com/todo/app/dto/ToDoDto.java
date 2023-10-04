@@ -3,9 +3,19 @@ package com.todo.app.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+import org.springframework.web.util.HtmlUtils;
 
+/**
+ * The `ToDoDto` class represents a Data Transfer Object (DTO) for ToDo tasks in the application.
+ * It is used to transfer task-related information between the client and the server.
+ * This class includes fields such as task name, description, timestamps, priority, status, and category information.
+ * It also enforces validation rules on its fields using annotations.
+ */
 public class ToDoDto implements Serializable {
 
 	/**
@@ -13,27 +23,44 @@ public class ToDoDto implements Serializable {
 	 */
 	private static final long serialVersionUID = -8863390563653358670L;
 	
-	@JsonProperty
+	@NotNull(message = "Task ID must not be null")
 	private int taskId;
 
-	private String taskName;
+	@NotBlank(message = "Task name is required")
+    @Size(min = 1, max = 255, message = "Task name must be between 1 and 255 characters")
+    private String taskName;
 
-	private String description;
+	@Size(max = 1000, message = "Description can have a maximum of 1000 characters")
+    private String description;
 
-	private LocalDateTime createdTimestamp;
+	@NotNull(message = "Created timestamp must not be null")
+    private LocalDateTime createdTimestamp;
 
-	private LocalDateTime updatedTimestamp;
+	@NotNull(message = "Updated timestamp must not be null")
+    private LocalDateTime updatedTimestamp;
 
-	private LocalDateTime targetTimestamp; // for reminders
+    @NotNull(message = "Target timestamp must not be null")
+    private LocalDateTime targetTimestamp;
 
-	private String priority; // enum: low, medium, high
+    @Pattern(regexp = "low|medium|high", message = "Priority must be 'low', 'medium', or 'high'")
+    private String priority;
 
-	private String status;
+    @Pattern(regexp = "pending|in progress|completed", message = "Status must be 'pending', 'in progress', or 'completed'")
+    private String status;
+
+    @NotNull(message = "Category ID must not be null")
+    private int categoryId;
+
+    @NotBlank(message = "Category name is required")
+    @Size(min = 1, max = 255, message = "Category name must be between 1 and 255 characters")
+    private String categoryName;
 	
-	private int categoryId;
-
-	private String categoryName;
-	
+    /**
+     * The `ToDoDto` class represents a Data Transfer Object (DTO) for ToDo tasks in the application.
+     * It is used to transfer task-related information between the client and the server.
+     * This class includes fields such as task name, description, timestamps, priority, status, and category information.
+     * It also enforces validation rules on its fields using annotations.
+     */
 	public ToDoDto(int taskId, 
 			String taskName, 
 			String description, 
@@ -69,7 +96,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setTaskName(String taskName) {
-		this.taskName = taskName;
+	    this.taskName = HtmlUtils.htmlEscape(taskName);
 	}
 
 	public String getDescription() {
@@ -77,7 +104,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+	    this.description = HtmlUtils.htmlEscape(description);
 	}
 
 	public LocalDateTime getCreatedTimestamp() {
@@ -109,7 +136,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setPriority(String priority) {
-		this.priority = priority;
+	    this.priority = HtmlUtils.htmlEscape(priority);
 	}
 
 	public String getStatus() {
@@ -117,7 +144,7 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+	    this.status = HtmlUtils.htmlEscape(status);
 	}
 
 	public int getCategoryId() {
@@ -133,8 +160,9 @@ public class ToDoDto implements Serializable {
 	}
 
 	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	    this.categoryName = HtmlUtils.htmlEscape(categoryName);
 	}
+
 
 	@Override
 	public String toString() {
@@ -150,7 +178,5 @@ public class ToDoDto implements Serializable {
 				+ ", categoryName=" + categoryName 
 				+ "]";
 	}
-	
-	
-	
+
 }

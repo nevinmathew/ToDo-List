@@ -44,5 +44,9 @@ public interface TaskRepository extends JpaRepository<Tasks, Integer>{
 			"c.id = t.category_id and " + 
 			" t.id = :id ", nativeQuery=true)
 	Optional<ToDoProjection> findTodoById(@Param("id") int id);
+
+	boolean existsByTaskName(String taskName);
+
+	boolean existsByTaskNameAndIdNot(String taskName, int id);
 	
 }

@@ -38,15 +38,12 @@ public class Tasks implements Serializable {
 	@Column
 	private String description;
 	
-//	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column
 	private LocalDateTime createdTimestamp;
 
-//	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column
 	private LocalDateTime updatedTimestamp;
 	
-//	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column
 	private LocalDateTime targetTimestamp; //for reminders
 	

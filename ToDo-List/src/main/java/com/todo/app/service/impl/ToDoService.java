@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.todo.app.dto.ToDoDto;
@@ -19,64 +20,74 @@ import com.todo.app.repository.TaskRepository;
 import com.todo.app.repository.projections.ToDoProjection;
 import com.todo.app.service.IToDoService;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@OpenAPIDefinition(tags = {@Tag(name = "ToDo Service", description = "Operations related to ToDo management")})
 @Service
 public class ToDoService implements IToDoService{
 
 	@Autowired
-	TaskRepository taskRepo;
+	TaskRepository taskRepository;
 	
 	@Autowired
-	CategoryRepository categoryRepo;
+	CategoryRepository categoryRepository;
 	
 //	@Autowired
 //	EntityManager entityManager;
 	
+	/**
+	 * Get a list of ToDos.
+	 *
+	 * @return A list of ToDoProjection objects.
+	 */
+	@Operation(summary = "Get a list of ToDos")
 	@Override
 	public List<ToDoProjection> showToDos() {
-		List<ToDoProjection> tasks = taskRepo.findAllTasks();
+		List<ToDoProjection> tasks = taskRepository.findAllTasks();
 		
 		return tasks.isEmpty() ? Collections.emptyList() : tasks;
 	}
 
+	/**
+	 * Get a ToDo by ID.
+	 *
+	 * @param id The ID of the ToDo to retrieve.
+	 * @return A ToDoProjection object if found, otherwise null.
+	 */
 	@Override
+	@Operation(summary = "Get a ToDo by ID")
 	public ToDoProjection getToDo(int id) {
-		Optional<ToDoProjection> task = taskRepo.findTodoById(id);
+		Optional<ToDoProjection> task = taskRepository.findTodoById(id);
 		
 		return task.isPresent() ? task.get() : null;
 	}
 
+	/**
+	 * Creates a new ToDo task based on the provided ToDoDto object.
+	 *
+	 * @param toDo The ToDoDto object representing the task to be created.
+	 * @return A message indicating the result of the creation operation.
+	 */
 	@Override
 	@Transactional
+	@Operation(summary = "Create a new ToDo")
 	public String createToDo(ToDoDto toDo) {
+		
+        if (taskRepository.existsByTaskName(toDo.getTaskName())) {
+            throw new IllegalArgumentException("A task with the same name already exists.");
+        }
+        
 		Tasks task = new Tasks();
 		task.setTaskName(toDo.getTaskName());
 		task.setDescription(toDo.getDescription());
 		
 		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty())
-			switch(toDo.getPriority().toLowerCase()) {
-				case "low":
-					task.setPriority(Priority.low.name());
-					break;
-				case "medium":
-					task.setPriority(Priority.medium.name());
-					break;
-				case "high":
-					task.setPriority(Priority.high.name());
-					break;
-			}
+			task.setPriority(Priority.valueOf(toDo.getPriority().toUpperCase()).name());
 		
 		if(toDo.getStatus()!=null && !toDo.getStatus().isEmpty())
-			switch(toDo.getStatus().toLowerCase()){
-				case "pending":
-					task.setStatus(Status.pending.name());
-					break;
-				case "inprogress":
-					task.setStatus(Status.inProgress.name());
-					break;
-				case "completed":
-					task.setStatus(Status.completed.name());
-					break;
-			}
+			task.setStatus(Status.valueOf(toDo.getStatus().toUpperCase()).name());
 		
 		task.setCreatedTimestamp(LocalDateTime.now());
 		
@@ -84,49 +95,40 @@ public class ToDoService implements IToDoService{
 			task.setTargetTimestamp(toDo.getTargetTimestamp());
 		
 //		task.setCategory(entityManager.getReference(Category.class, toDo.getCategoryId()));
-		task.setCategory(categoryRepo.findById(toDo.getCategoryId()).get());
+		task.setCategory(categoryRepository.findById(toDo.getCategoryId()).get());
 		
-		taskRepo.save(task);
+		taskRepository.save(task);
 		return "The toDo has been created.";
 	}
 
+	/**
+	 * Updates an existing ToDo task by its ID based on the provided ToDoDto object.
+	 *
+	 * @param id   The ID of the ToDo task to update.
+	 * @param toDo The ToDoDto object with updated task information.
+	 * @return The updated ToDoDto object.
+	 */
 	@Override
+	@Transactional
+	@Operation(summary = "Update a ToDo by ID")
 	public ToDoDto updateToDo(int id, ToDoDto toDo) { 
-		Optional<Tasks> task = taskRepo.findById(id); 
+        
+		Optional<Tasks> task = taskRepository.findById(id);
+		if(!task.isPresent())
+			throw new EmptyResultDataAccessException("Task with ID "+ id +" not found.", id);
+		
+        if (!task.get().getTaskName().equals(toDo.getTaskName()) && taskRepository.existsByTaskNameAndIdNot(toDo.getTaskName(), id)) {
+            throw new IllegalArgumentException("A task with the same name already exists.");
+        }
+		
 		task.get().setTaskName(toDo.getTaskName()); 
 		task.get().setDescription(toDo.getDescription()); 
 		
-		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty()) 
-			switch(toDo.getPriority().toLowerCase()) { 
-				case "low": 
-					task.get().setPriority(Priority.low.name()); 
-					toDo.setPriority(Priority.low.name()); 
-					break;
-				case "medium":
-					task.get().setPriority(Priority.medium.name());
-					toDo.setPriority(Priority.medium.name());
-					break;
-				case "high":
-					task.get().setPriority(Priority.high.name());
-					toDo.setPriority(Priority.high.name());
-					break;
-			}
+		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty())
+			task.get().setPriority(Priority.valueOf(toDo.getPriority().toUpperCase()).name());
 		
 		if(toDo.getStatus()!=null && !toDo.getStatus().isEmpty())
-			switch(toDo.getStatus().toLowerCase()){
-				case "pending":
-					task.get().setStatus(Status.pending.name());
-					toDo.setStatus(Status.pending.name());
-					break;
-				case "inprogress":
-					task.get().setStatus(Status.inProgress.name());
-					toDo.setStatus(Status.inProgress.name());
-					break;
-				case "completed":
-					task.get().setStatus(Status.completed.name());
-					toDo.setStatus(Status.completed.name());
-					break;
-			} 
+			task.get().setStatus(Status.valueOf(toDo.getStatus().toUpperCase()).name());
 
 		if(task.get().getTargetTimestamp()!=null) 
 			task.get().setTargetTimestamp(toDo.getTargetTimestamp()); 
@@ -136,21 +138,28 @@ public class ToDoService implements IToDoService{
 			toDo.setUpdatedTimestamp(task.get().getUpdatedTimestamp()); 
 		}
 		
-		taskRepo.save(task.get());
+		taskRepository.save(task.get());
 		return toDo;
 	}
 
+	/**
+	 * Deletes a ToDo task by its ID.
+	 *
+	 * @param id The ID of the ToDo task to delete.
+	 * @return A message indicating the result of the deletion operation.
+	 * @throws EmptyResultDataAccessException If the task with the specified ID is not found.
+	 */
 	@Override
+	@Operation(summary = "Delete a ToDo by ID")
 	public String deleteToDo(int id) {
-		Optional<Tasks> task = taskRepo.findById(id);
-		
-		if(task.isPresent()) {
-			taskRepo.deleteById(id);
-			return "The user has been deleted";
-		}
 
-		return "This user does not exist";
+		Optional<Tasks> task = taskRepository.findById(id);
+
+		if(!task.isPresent())
+			throw new EmptyResultDataAccessException("Task with ID "+ id +" not found.", id);
+			
+		taskRepository.deleteById(id);
+		return "The user has been deleted";
 	}
-
 
 }

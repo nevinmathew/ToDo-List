@@ -12,7 +12,7 @@ vector images for todo lists, reminders and the app stored in the s3 bucket
 
 elastic for search functionality
 
-WebAuthn login without password. (research how to get logged in user)
+* WebAuthn login without password. (research how to get logged in user)
 
 * swagger to show the apis
 

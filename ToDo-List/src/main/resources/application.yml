@@ -1,0 +1,41 @@
+logging:
+  level:
+    org:
+      hibernate: trace
+      springframework: trace
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  server:
+    port: 9090
+spring:
+  boot:
+    admin:
+      client:
+        instance:
+          metadata:
+            tags:
+              environment: QA
+        url: http://localhost:8080
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+springdoc:
+  api-docs:
+    enabled: true
+  show-actuator: true
+  swagger-ui:
+    enabled: true
+  use-management-port: true
