@@ -66,6 +66,7 @@ public class ToDoController {
      * @return ResponseEntity containing a list of ToDo tasks.
      */
     @Operation(summary = "Get a list of ToDos")
+    @GetMapping(path = "/get-list")
 	public ResponseEntity<?> getToDoList(){
 		return ResponseEntity.ok(toDoService.showToDos());
 	}

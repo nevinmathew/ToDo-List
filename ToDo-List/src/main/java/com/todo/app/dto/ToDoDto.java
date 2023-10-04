@@ -36,7 +36,6 @@ public class ToDoDto implements Serializable {
 	@NotNull(message = "Created timestamp must not be null") 
     private LocalDateTime createdTimestamp;
 
-	@NotNull(message = "Updated timestamp must not be null") 
     private LocalDateTime updatedTimestamp;
 
     @NotNull(message = "Target timestamp must not be null") 
@@ -45,7 +44,7 @@ public class ToDoDto implements Serializable {
     @Pattern(regexp = "low|medium|high", message = "Priority must be 'low', 'medium', or 'high'") 
     private String priority;
 
-    @Pattern(regexp = "pending|in progress|completed", message = "Status must be 'pending', 'in progress', or 'completed'") 
+    @Pattern(regexp = "pending|in_progress|completed", message = "Status must be 'pending', 'in progress', or 'completed'") 
     private String status;
 
     @NotNull(message = "Category ID must not be null") 

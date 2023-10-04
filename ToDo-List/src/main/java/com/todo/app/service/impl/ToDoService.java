@@ -8,6 +8,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @OpenAPIDefinition(tags = {@Tag(name = "ToDo Service", description = "Operations related to ToDo management")})
+@CacheConfig(cacheNames={"ToDo"})   
 @Service
 public class ToDoService implements IToDoService{
 
@@ -57,6 +62,7 @@ public class ToDoService implements IToDoService{
 	 * @return A ToDoProjection object if found, otherwise null.
 	 */
 	@Override
+    @Cacheable(key = "'getToDo_' + #id", condition = "#id > 0")
 	@Operation(summary = "Get a ToDo by ID")
 	public ToDoProjection getToDo(int id) {
 		Optional<ToDoProjection> task = taskRepository.findTodoById(id);
@@ -109,7 +115,8 @@ public class ToDoService implements IToDoService{
 	 * @return The updated ToDoDto object.
 	 */
 	@Override
-	@Transactional 
+	@Transactional
+	@CachePut(key = "'getToDo_' + #id")
 	@Operation(summary = "Update a ToDo by ID")
 	public ToDoDto updateToDo(int id, ToDoDto toDo) { 
         
@@ -150,6 +157,7 @@ public class ToDoService implements IToDoService{
 	 * @throws EmptyResultDataAccessException If the task with the specified ID is not found.
 	 */
 	@Override
+	@CacheEvict(key = "'getToDo_' + #id")
 	@Operation(summary = "Delete a ToDo by ID")
 	public String deleteToDo(int id) {
 
