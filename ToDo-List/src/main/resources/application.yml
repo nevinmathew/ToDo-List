@@ -3,6 +3,7 @@ logging:
     org:
       hibernate: trace
       springframework: trace
+
 management:
   endpoint:
     health:
@@ -14,6 +15,7 @@ management:
   server:
     port: 9090
 #http://localhost:9090/actuator/swagger-ui/
+
 spring:
   boot:
     admin:
@@ -25,14 +27,15 @@ spring:
         url: http://localhost:8080
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: root
-    url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
+    password: root
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
 springdoc:
   api-docs:
     enabled: true
@@ -40,3 +43,11 @@ springdoc:
   swagger-ui:
     enabled: true
   use-management-port: true
+  
+jasypt:
+  encryptor:
+    password: ${MY_KEY_VAR}
+    algorithm: PBEWithMD5AndDES
+#    environment-variable-name: MY_ENCRYPTION_KEY_ENV_VAR
+
+

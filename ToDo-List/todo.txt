@@ -4,7 +4,7 @@ cron for reminders and push notifications for that day, early in the morning
 
 stored procedure or batch processing to upload saved data from when the user was offline. In the client app
 
-async for realtime upload to allow multidevice support
+* async for realtime entry to allow multidevice support
 
 externalise configuration from the jar
 
@@ -20,4 +20,4 @@ WebAuthn login without password. (research how to get logged in user)
 
 use builder ?
 
-caching ?
+* caching

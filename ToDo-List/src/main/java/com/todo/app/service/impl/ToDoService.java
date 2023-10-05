@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +14,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.todo.app.dto.ToDoDto;
@@ -39,6 +41,9 @@ public class ToDoService implements IToDoService{
 	@Autowired
 	CategoryRepository categoryRepository;
 	
+    @Autowired
+    private ThreadPoolTaskExecutor executor;
+	
 //	@Autowired
 //	EntityManager entityManager;
 	
@@ -49,10 +54,13 @@ public class ToDoService implements IToDoService{
 	 */
 	@Operation(summary = "Get a list of ToDos")
 	@Override
-	public List<ToDoProjection> showToDos() {
-		List<ToDoProjection> tasks = taskRepository.findAllTasks();
+	public CompletableFuture<List<ToDoProjection>> showToDos() {
 		
-		return tasks.isEmpty() ? Collections.emptyList() : tasks;
+		return CompletableFuture.supplyAsync(() -> {
+			List<ToDoProjection> tasks = taskRepository.findAllTasks();
+
+			return tasks.isEmpty() ? Collections.emptyList() : tasks;
+		}, executor);
 	}
 
 	/**
@@ -64,10 +72,13 @@ public class ToDoService implements IToDoService{
 	@Override
     @Cacheable(key = "'getToDo_' + #id", condition = "#id > 0")
 	@Operation(summary = "Get a ToDo by ID")
-	public ToDoProjection getToDo(int id) {
+	public CompletableFuture<ToDoProjection> getToDo(int id) {
+		
+		return CompletableFuture.supplyAsync(() -> {
 		Optional<ToDoProjection> task = taskRepository.findTodoById(id);
 		
 		return task.isPresent() ? task.get() : null;
+		}, executor);
 	}
 
 	/**
@@ -81,29 +92,35 @@ public class ToDoService implements IToDoService{
 	@Operation(summary = "Create a new ToDo")
 	public String createToDo(ToDoDto toDo) {
 		
-        if (taskRepository.existsByTaskName(toDo.getTaskName())) {
-            throw new IllegalArgumentException("A task with the same name already exists.");
-        }
-        
-		Tasks task = new Tasks();
-		task.setTaskName(toDo.getTaskName());
-		task.setDescription(toDo.getDescription());
+		CompletableFuture
+				.runAsync(() -> {
+
+					if (taskRepository.existsByTaskName(toDo.getTaskName())) {
+						throw new IllegalArgumentException("A task with the same name already exists.");
+					}
+
+					Tasks task = new Tasks();
+					task.setTaskName(toDo.getTaskName());
+					task.setDescription(toDo.getDescription());
+
+					if (toDo.getPriority() != null && !toDo.getPriority().isEmpty())
+						task.setPriority(Priority.valueOf(toDo.getPriority().toUpperCase()).name());
+
+					if (toDo.getStatus() != null && !toDo.getStatus().isEmpty())
+						task.setStatus(Status.valueOf(toDo.getStatus().toUpperCase()).name());
+
+					task.setCreatedTimestamp(LocalDateTime.now());
+
+					if (task.getTargetTimestamp() != null)
+						task.setTargetTimestamp(toDo.getTargetTimestamp());
+
+					//		task.setCategory(entityManager.getReference(Category.class, toDo.getCategoryId()));
+					task.setCategory(categoryRepository.findById(toDo.getCategoryId()).get());
+
+					taskRepository.save(task);
+				}, executor)
+		.join();
 		
-		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty())
-			task.setPriority(Priority.valueOf(toDo.getPriority().toUpperCase()).name());
-		
-		if(toDo.getStatus()!=null && !toDo.getStatus().isEmpty())
-			task.setStatus(Status.valueOf(toDo.getStatus().toUpperCase()).name());
-		
-		task.setCreatedTimestamp(LocalDateTime.now());
-		
-		if(task.getTargetTimestamp()!=null)
-			task.setTargetTimestamp(toDo.getTargetTimestamp());
-		
-//		task.setCategory(entityManager.getReference(Category.class, toDo.getCategoryId()));
-		task.setCategory(categoryRepository.findById(toDo.getCategoryId()).get());
-		
-		taskRepository.save(task);
 		return "The toDo has been created.";
 	}
 
@@ -120,32 +137,38 @@ public class ToDoService implements IToDoService{
 	@Operation(summary = "Update a ToDo by ID")
 	public ToDoDto updateToDo(int id, ToDoDto toDo) { 
         
-		Optional<Tasks> task = taskRepository.findById(id);
-		if(!task.isPresent())
-			throw new EmptyResultDataAccessException("Task with ID "+ id +" not found.", id);
-		
-        if (!task.get().getTaskName().equals(toDo.getTaskName()) && taskRepository.existsByTaskNameAndIdNot(toDo.getTaskName(), id)) {
-            throw new IllegalArgumentException("A task with the same name already exists.");
-        }
-		
-		task.get().setTaskName(toDo.getTaskName()); 
-		task.get().setDescription(toDo.getDescription()); 
-		
-		if(toDo.getPriority()!=null && !toDo.getPriority().isEmpty())
-			task.get().setPriority(Priority.valueOf(toDo.getPriority().toUpperCase()).name());
-		
-		if(toDo.getStatus()!=null && !toDo.getStatus().isEmpty())
-			task.get().setStatus(Status.valueOf(toDo.getStatus().toUpperCase()).name());
+		CompletableFuture
+		.runAsync(() -> {
+			Optional<Tasks> task = taskRepository.findById(id);
+			if (!task.isPresent())
+				throw new EmptyResultDataAccessException("Task with ID " + id + " not found.", id);
 
-		if(task.get().getTargetTimestamp()!=null) 
-			task.get().setTargetTimestamp(toDo.getTargetTimestamp()); 
+			if (!task.get().getTaskName().equals(toDo.getTaskName())
+					&& taskRepository.existsByTaskNameAndIdNot(toDo.getTaskName(), id)) {
+				throw new IllegalArgumentException("A task with the same name already exists.");
+			}
+
+			task.get().setTaskName(toDo.getTaskName());
+			task.get().setDescription(toDo.getDescription());
+
+			if (toDo.getPriority() != null && !toDo.getPriority().isEmpty())
+				task.get().setPriority(Priority.valueOf(toDo.getPriority().toUpperCase()).name());
+
+			if (toDo.getStatus() != null && !toDo.getStatus().isEmpty())
+				task.get().setStatus(Status.valueOf(toDo.getStatus().toUpperCase()).name());
+
+			if (task.get().getTargetTimestamp() != null)
+				task.get().setTargetTimestamp(toDo.getTargetTimestamp());
+
+			if (task.isPresent()) {
+				task.get().setUpdatedTimestamp(LocalDateTime.now());
+				toDo.setUpdatedTimestamp(task.get().getUpdatedTimestamp());
+			}
+
+			taskRepository.save(task.get());
+		}, executor)
+		.join();
 		
-		if(task.isPresent()) { 
-			task.get().setUpdatedTimestamp(LocalDateTime.now()); 
-			toDo.setUpdatedTimestamp(task.get().getUpdatedTimestamp()); 
-		}
-		
-		taskRepository.save(task.get());
 		return toDo;
 	}
 
@@ -157,17 +180,23 @@ public class ToDoService implements IToDoService{
 	 * @throws EmptyResultDataAccessException If the task with the specified ID is not found.
 	 */
 	@Override
+	@Transactional
 	@CacheEvict(key = "'getToDo_' + #id")
 	@Operation(summary = "Delete a ToDo by ID")
-	public String deleteToDo(int id) {
+	public CompletableFuture<String> deleteToDo(int id) {
 
-		Optional<Tasks> task = taskRepository.findById(id);
-
-		if(!task.isPresent())
-			throw new EmptyResultDataAccessException("Task with ID "+ id +" not found.", id);
-			
-		taskRepository.deleteById(id);
-		return "The user has been deleted";
+		return CompletableFuture
+				.runAsync(() -> {
+					Optional<Tasks> task = taskRepository.findById(id);
+		
+					if (!task.isPresent())
+						throw new EmptyResultDataAccessException("Task with ID " + id + " not found.", id);
+		
+					taskRepository.deleteById(id);
+		
+				}, executor)
+				.thenApply(result -> "The user has been deleted");
+		
 	}
 
 }
