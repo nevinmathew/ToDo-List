@@ -45,10 +45,10 @@ If you require encryption for sensitive data, you can set up Jasypt encryption b
 A custom ThreadPoolTaskExecutor is defined in ExecutorServiceConfig. You can adjust its core pool size, maximum pool size, queue capacity, and thread name prefix according to your requirements.
 
 ### OpenAPI (Swagger) Documentation
-This application provides OpenAPI (Swagger) documentation for easy API exploration. You can access the API documentation at http://localhost:8080/swagger-ui.html.
+This application provides OpenAPI (Swagger) documentation for easy API exploration. You can access the API documentation at http://localhost:9090/actuator/swagger-ui/index.html.
 
 ### Spring Boot Admin
-This application is configured to interact with Spring Boot Admin. You can access the Spring Boot Admin dashboard at http://localhost:9090 to monitor the application's health and status.
+This application is configured to interact with Spring Boot Admin. You can access the Spring Boot Admin dashboard at http://localhost:8080/applications to monitor the application's health and status.
 
 ## License
 This project is licensed under the Mozilla Public License (MPL) - see the LICENSE file for details.
