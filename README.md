@@ -6,7 +6,7 @@ The ToDo List is a Java-based Spring Boot application that provides functionalit
 - [Features](#features)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- - [Asynchronous Processing](#asynchronous-processing)
+  - [Asynchronous Processing](#asynchronous-processing)
   - [Encryption](#encryption)
   - [Custom Executor Service](#custom-executor-service)
   - [OpenAPI (Swagger) Documentation](#openAPI-(swagger)-documentation)
@@ -32,9 +32,7 @@ Access the application through your web browser or API client at http://localhos
 Use the API endpoints to create, retrieve, update, and delete ToDo tasks.
 
 ## Configuration
-The application uses Spring Boot and Spring Caching for performance optimization. It also utilizes Jasypt for encryption.
-License
-This project is licensed under the Mozilla Public License (MPL). See the LICENSE file for details.
+The application uses Spring Boot and Spring Caching for performance optimization.
 
 ### Asynchronous Processing
 Asynchronous processing is employed in this application to enhance responsiveness and performance. Key components related to asynchronous processing include:
