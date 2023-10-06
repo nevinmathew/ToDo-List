@@ -8,7 +8,6 @@ The ToDo List is a Java-based Spring Boot application that provides functionalit
 - [Configuration](#configuration)
   - [Asynchronous Processing](#asynchronous-processing)
   - [Encryption](#encryption)
-  - [Custom Executor Service](#custom-executor-service)
   - [OpenAPI (Swagger) Documentation](#openAPI-(swagger)-documentation)
   - [Spring Boot Admin](#spring-boot-admin)
 - [License](#license)
@@ -37,15 +36,14 @@ The application uses Spring Boot and Spring Caching for performance optimization
 ### Asynchronous Processing
 Asynchronous processing is employed in this application to enhance responsiveness and performance. Key components related to asynchronous processing include:
 
-A custom ThreadPoolTaskExecutor bean for executing tasks asynchronously.
-CompletableFuture and the @Async annotation to perform tasks asynchronously.
+A custom `ThreadPoolTaskExecutor` bean for executing tasks asynchronously.
+`CompletableFuture` and the `@Async` annotation to perform tasks asynchronously.
 Offloading time-consuming operations to separate threads for improved user experience.
+
+A custom `ThreadPoolTaskExecutor` is defined in ExecutorServiceConfig. You can adjust its core pool size, maximum pool size, queue capacity, and thread name prefix according to your requirements.
 
 ### Encryption
 If you require encryption for sensitive data, you can set up Jasypt encryption by modifying EncryptionConfiguration. The application supports both property-based and environment variable-based encryption configuration.
-
-### Custom Executor Service
-A custom `ThreadPoolTaskExecutor` is defined in ExecutorServiceConfig. You can adjust its core pool size, maximum pool size, queue capacity, and thread name prefix according to your requirements.
 
 ### OpenAPI (Swagger) Documentation
 This application provides OpenAPI (Swagger) documentation for easy API exploration. You can access the API documentation at http://localhost:9090/actuator/swagger-ui/index.html.
