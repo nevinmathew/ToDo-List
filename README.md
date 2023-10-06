@@ -5,7 +5,12 @@ The ToDo List is a Java-based Spring Boot application that provides functionalit
 ## Table of Contents
 - [Features](#features)
 - [Usage](#usage)
-- [Configuration](#configuration) 
+- [Configuration](#configuration)
+- - [Asynchronous Processing](#asynchronous-processing)
+  - [Encryption](#encryption)
+  - [Custom Executor Service](#custom-executor-service)
+  - [OpenAPI (Swagger) Documentation](#openAPI-(swagger)-documentation)
+  - [Spring Boot Admin](#spring-boot-admin)
 - [License](#license)
 
 ## Features
@@ -42,7 +47,7 @@ Offloading time-consuming operations to separate threads for improved user exper
 If you require encryption for sensitive data, you can set up Jasypt encryption by modifying EncryptionConfiguration. The application supports both property-based and environment variable-based encryption configuration.
 
 ### Custom Executor Service
-A custom ThreadPoolTaskExecutor is defined in ExecutorServiceConfig. You can adjust its core pool size, maximum pool size, queue capacity, and thread name prefix according to your requirements.
+A custom `ThreadPoolTaskExecutor` is defined in ExecutorServiceConfig. You can adjust its core pool size, maximum pool size, queue capacity, and thread name prefix according to your requirements.
 
 ### OpenAPI (Swagger) Documentation
 This application provides OpenAPI (Swagger) documentation for easy API exploration. You can access the API documentation at http://localhost:9090/actuator/swagger-ui/index.html.
