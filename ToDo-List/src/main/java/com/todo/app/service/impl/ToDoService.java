@@ -54,13 +54,17 @@ public class ToDoService implements IToDoService{
 	 */
 	@Operation(summary = "Get a list of ToDos")
 	@Override
-	public CompletableFuture<List<ToDoProjection>> showToDos() {
+	public List<?> showToDos() {
 		
 		return CompletableFuture.supplyAsync(() -> {
 			List<ToDoProjection> tasks = taskRepository.findAllTasks();
 
 			return tasks.isEmpty() ? Collections.emptyList() : tasks;
-		}, executor);
+		}, executor)
+		.exceptionally(ex -> {
+            ex.printStackTrace();
+            throw new RuntimeException("Error while fetching ToDos.", ex);
+        }).join();
 	}
 
 	/**
@@ -72,13 +76,13 @@ public class ToDoService implements IToDoService{
 	@Override
     @Cacheable(key = "'getToDo_' + #id", condition = "#id > 0")
 	@Operation(summary = "Get a ToDo by ID")
-	public CompletableFuture<ToDoProjection> getToDo(int id) {
+	public ToDoProjection getToDo(int id) {
 		
 		return CompletableFuture.supplyAsync(() -> {
 		Optional<ToDoProjection> task = taskRepository.findTodoById(id);
 		
 		return task.isPresent() ? task.get() : null;
-		}, executor);
+		}).join();
 	}
 
 	/**
@@ -118,7 +122,7 @@ public class ToDoService implements IToDoService{
 					task.setCategory(categoryRepository.findById(toDo.getCategoryId()).get());
 
 					taskRepository.save(task);
-				}, executor)
+				})
 		.join();
 		
 		return "The toDo has been created.";
@@ -166,7 +170,7 @@ public class ToDoService implements IToDoService{
 			}
 
 			taskRepository.save(task.get());
-		}, executor)
+		})
 		.join();
 		
 		return toDo;
@@ -183,7 +187,7 @@ public class ToDoService implements IToDoService{
 	@Transactional
 	@CacheEvict(key = "'getToDo_' + #id")
 	@Operation(summary = "Delete a ToDo by ID")
-	public CompletableFuture<String> deleteToDo(int id) {
+	public String deleteToDo(int id) {
 
 		return CompletableFuture
 				.runAsync(() -> {
@@ -194,8 +198,8 @@ public class ToDoService implements IToDoService{
 		
 					taskRepository.deleteById(id);
 		
-				}, executor)
-				.thenApply(result -> "The user has been deleted");
+				})
+				.thenApply(result -> "The user has been deleted").join();
 		
 	}
 

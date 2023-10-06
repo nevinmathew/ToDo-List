@@ -56,7 +56,7 @@ public class ToDoController {
             return toDo != null ? ResponseEntity.ok(toDoService.createToDo(toDo)) : ResponseEntity.noContent().build();
         } catch (Exception ex) {
             ex.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The data couldn't be saved. Please try again.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The data couldn't be saved. Please try again.\n"+ex.getMessage());
         }
     }
 	
@@ -68,7 +68,12 @@ public class ToDoController {
     @Operation(summary = "Get a list of ToDos")
     @GetMapping(path = "/get-list")
 	public ResponseEntity<?> getToDoList(){
-		return ResponseEntity.ok(toDoService.showToDos());
+		try{
+			return ResponseEntity.ok(toDoService.showToDos());
+		} catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The data couldn't be retrieved. Please try again.\n"+e.getMessage());
+		}
 	}
 	
     /**
@@ -80,9 +85,13 @@ public class ToDoController {
      */
     @Operation(summary = "Get a ToDo by ID")
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getToDo(
-            @Parameter(name = "ToDo ID", required = true) @PathVariable("id") int id) {
-		return ResponseEntity.ok(toDoService.getToDo(id));
+    public ResponseEntity<?> getToDo(@Parameter(name = "ToDo ID", required = true) @PathVariable("id") int id) {
+		try{
+			return ResponseEntity.ok(toDoService.getToDo(id));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The data couldn't be retrieved. Please try again.\n"+e.getMessage());
+		}
 	}
 	
     /**
@@ -99,11 +108,16 @@ public class ToDoController {
             @Parameter(name = "Updated ToDo information", required = true) @Valid @RequestBody ToDoDto toDo,
             BindingResult bindingResult) {
 
-		if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-
-        return ResponseEntity.ok(toDoService.updateToDo(id, toDo));
+		try{
+			if (bindingResult.hasErrors()) {
+	            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+	        }
+	
+	        return ResponseEntity.ok(toDoService.updateToDo(id, toDo));
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The data couldn't be updated. Please try again.\n"+ex.getMessage());
+		}
     }
 
     /**
@@ -114,8 +128,12 @@ public class ToDoController {
      */
     @Operation(summary = "Delete a ToDo by ID")
     @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<?> deleteToDo(
-            @Parameter(name = "ToDo ID", required = true) @PathVariable("id") int id) {
-		return ResponseEntity.ok(toDoService.deleteToDo(id));
+    public ResponseEntity<?> deleteToDo(@Parameter(name = "ToDo ID", required = true) @PathVariable("id") int id) {
+		try{
+			return ResponseEntity.ok(toDoService.deleteToDo(id));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The data couldn't be deleted. Please try again.\n"+e.getMessage());
+		}
 	}
 }

@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * The `Category` class represents a category used to differentiate between reminders and ToDo tasks.
+ */
 @Data
 @Entity
 @Table(indexes = @Index(name = "idx_category_tasks", columnList = "id"))

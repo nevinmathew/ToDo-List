@@ -1,14 +1,14 @@
 package com.todo.app;
 
-import org.jasypt.encryption.StringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 
+/**
+ * Main class to start the ToDoListApplication Spring Boot application.
+ */
 @EnableAdminServer
 @EnableCaching
 //@EnableEncryptableProperties

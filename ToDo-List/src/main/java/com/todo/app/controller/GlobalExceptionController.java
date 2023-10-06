@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 
+/**
+ * The `GlobalExceptionController` class is a Spring Controller Advice component.
+ * It handles global exceptions.
+ */
 @ControllerAdvice
 @OpenAPIDefinition(info = @Info(title = "Global Exception Controller", description = "Handles global exceptions in the ToDo API"))
 public class GlobalExceptionController {

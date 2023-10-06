@@ -1,9 +1,11 @@
+# Configure logging levels for Hibernate and Spring Framework
 logging:
   level:
     org:
       hibernate: trace
       springframework: trace
 
+# Management endpoints configuration
 management:
   endpoint:
     health:
@@ -14,8 +16,12 @@ management:
         include: '*'
   server:
     port: 9090
-#http://localhost:9090/actuator/swagger-ui/
+# URLs for accessing Actuator endpoints:
+# - http://localhost:9090/actuator/health (Health endpoint)
+# - http://localhost:9090/actuator/info (Info endpoint)
+# - http://localhost:9090/actuator/swagger-ui (Swagger endpoint)
 
+# Configure Spring Boot Admin client settings
 spring:
   boot:
     admin:
@@ -25,17 +31,22 @@ spring:
             tags:
               environment: QA
         url: http://localhost:8080
+
+# Configure the database connection
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: root
+    
+# Configure JPA settings for database interaction
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
     hibernate:
       ddl-auto: update
 
+# Configure Springdoc (Swagger) settings
 springdoc:
   api-docs:
     enabled: true
@@ -43,7 +54,8 @@ springdoc:
   swagger-ui:
     enabled: true
   use-management-port: true
-  
+
+# Configure Jasypt encryption settings
 jasypt:
   encryptor:
     password: ${MY_KEY_VAR}

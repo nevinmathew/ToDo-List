@@ -14,7 +14,6 @@ import org.springframework.web.util.HtmlUtils;
  * The `ToDoDto` class represents a Data Transfer Object (DTO) for ToDo tasks in the application.
  * It is used to transfer task-related information between the client and the server.
  * This class includes fields such as task name, description, timestamps, priority, status, and category information.
- * It also enforces validation rules on its fields using annotations.
  */
 public class ToDoDto implements Serializable {
 
@@ -53,12 +52,10 @@ public class ToDoDto implements Serializable {
     @NotBlank(message = "Category name is required") 
     @Size(min = 1, max = 255, message = "Category name must be between 1 and 255 characters") 
     private String categoryName;
-	
+
     /**
-     * The `ToDoDto` class represents a Data Transfer Object (DTO) for ToDo tasks in the application.
-     * It is used to transfer task-related information between the client and the server.
-     * This class includes fields such as task name, description, timestamps, priority, status, and category information.
-     * It also enforces validation rules on its fields using annotations.
+     * Constructs a new instance of the {@code ToDoDto} class with the provided parameters.
+     * This constructor is specifically designed for creating instances for the {@code ToDoProjection} interface.
      */
 	public ToDoDto(int taskId, 
 			String taskName, 

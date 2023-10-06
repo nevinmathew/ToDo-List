@@ -16,6 +16,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * The `Tasks` class represents a task entity in the application.
+ */
 @Data
 @Entity
 @Table(indexes = @Index(name = "idx_task_category", columnList = "id"))
