@@ -1,9 +1,7 @@
 package com.todo.app.configuration;
 
 import org.jasypt.encryption.StringEncryptor;
-import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,25 +14,16 @@ public class EncryptionConfiguration  {
 
 	@Value("${jasypt.encryptor.password}")
 	String myKey;
-	
-	@Value("${jasypt.encryptor.algorithm}")
-	String algorithm;
 
 	/**
      * Configures and provides a StringEncryptor bean.
      *
      * @return A configured StringEncryptor.
      */
-	@Bean("jasyptEncryptor")
+	@Bean
 	public StringEncryptor stringEncryptor() {
-//	  StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-	  PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
-      SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-//	  encryptor.setPassword(myKey);
-//      encryptor.setAlgorithm(algorithm);
-      config.setPassword(myKey); // encryptor's private key
-      config.setAlgorithm(algorithm);
-      encryptor.setConfig(config);
+	  StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+	  encryptor.setPassword("${MY_KEY_VAR}");
 	  return encryptor;
 	}
 

@@ -30,12 +30,6 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-/**
- * The `ToDoService` class implements the business logic for managing ToDo tasks.
- * It provides methods for creating, updating, retrieving, and deleting tasks. Asynchronous processing is utilized
- * to improve responsiveness and performance by offloading tasks to a separate thread pool.
- * This service class also includes caching for optimizing task retrieval.
- */
 @OpenAPIDefinition(tags = {@Tag(name = "ToDo Service", description = "Operations related to ToDo management")})
 @CacheConfig(cacheNames={"ToDo"})   
 @Service
