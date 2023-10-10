@@ -1,9 +1,9 @@
 # Configure logging levels for Hibernate and Spring Framework
-logging:
-  level:
-    org:
-      hibernate: trace
-      springframework: trace
+#logging:
+#  level:
+#    org:
+#      hibernate: trace
+#      springframework: trace
 
 # Management endpoints configuration
 management:
@@ -16,10 +16,11 @@ management:
         include: '*'
   server:
     port: 9090
-# URLs for accessing Actuator endpoints:
-# - http://localhost:9090/actuator/health (Health endpoint)
-# - http://localhost:9090/actuator/info (Info endpoint)
-# - http://localhost:9090/actuator/swagger-ui (Swagger endpoint)
+# URLs for accessing Actuators:
+# - http://localhost:9090/actuator (Actuator endpoint)
+
+# URLs for accessing Swagger UI:
+# - http://localhost:9090/actuator/swagger-ui/index.html (Swagger endpoint)
 
 # Configure Spring Boot Admin client settings
 spring:
@@ -31,13 +32,15 @@ spring:
             tags:
               environment: QA
         url: http://localhost:8080
+# URLs for accessing Spring Boot Admin:
+# - http://localhost:8080/applications (Actuator endpoint)
 
 # Configure the database connection
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: ENC(I0BXUCm0vCiASShRUucwIA==)
     
 # Configure JPA settings for database interaction
   jpa:
