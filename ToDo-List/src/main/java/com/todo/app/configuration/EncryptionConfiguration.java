@@ -30,6 +30,11 @@ public class EncryptionConfiguration  {
 //	  return encryptor;
 //	}
 	
+	/**
+     * Configures and provides a DataSource bean.
+     *
+     * @return A configured DataSource.
+     */
 	@Bean
     public DataSource dataSource(Environment environment) {
         String encryptedPassword = environment.getProperty("spring.datasource.password");

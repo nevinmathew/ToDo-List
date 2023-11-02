@@ -8,7 +8,7 @@
   ███    ▀███▀    ███
   ███             ███
   ███▄▄▄▄▄▄▄▄▄▄▄▄▄███
-  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ 
+  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ${Ansi.RED} To-Do Application :: 0.0.1 :: ${Ansi.RED} ${Ansi.DEFAULT}
 Powered by Spring Boot ${spring-boot.version}
