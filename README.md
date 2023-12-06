@@ -53,6 +53,6 @@ This application provides OpenAPI (Swagger) documentation for easy API explorati
 This application is configured to interact with Spring Boot Admin. You can access the Spring Boot Admin dashboard at http://localhost:8080/applications to monitor the application's health and status.
 
 ## License
-This project is licensed under the Mozilla Public License (MPL) - see the LICENSE file for details.
+This project is licensed under the Mozilla Public License (MPL) - see the [LICENSE](https://github.com/nevinmathew/ToDo-List/blob/main/LICENSE) file for details.
 
 Happy coding!
