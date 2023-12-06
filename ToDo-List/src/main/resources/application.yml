@@ -40,7 +40,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: ENC(I0BXUCm0vCiASShRUucwIA==)
+    password: ${DATABASE_PASSWORD_ENV_VAR}
     
 # Configure JPA settings for database interaction
   jpa:
@@ -65,4 +65,14 @@ jasypt:
     algorithm: PBEWithMD5AndDES
 #    environment-variable-name: MY_ENCRYPTION_KEY_ENV_VAR
 
+
+#http://localhost:9090/actuator/swagger-ui/
+
+#spring.mail.host=smtp.gmail.com
+#spring.mail.port=587
+#spring.mail.username=user@mail.com
+#spring.mail.password=user@987
+#spring.boot.admin.notify.mail.to=user@mail.com
+
+#spring.mail.properties.mail.smtp.starttls.enable=true
 
