@@ -81,10 +81,7 @@ public class Tasks implements Serializable {
 	
 	//copy constructor
 	public Tasks(Tasks original, String newTaskName, LocalDateTime newCreatedTimestamp) {
-        // Call the constructor that initializes final fields
         this(newTaskName, newCreatedTimestamp);
-
-        // Use BeanUtils to copy properties from the original object
         BeanUtils.copyProperties(original, this);
     }
 	
