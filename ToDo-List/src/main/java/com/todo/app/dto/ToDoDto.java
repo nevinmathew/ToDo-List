@@ -174,5 +174,70 @@ public class ToDoDto implements Serializable {
 				+ ", categoryName=" + categoryName 
 				+ "]";
 	}
+	
+	public static class ToDoDtoBuilder {
+		private int taskId;
+	    private String taskName;
+	    private String description;
+	    private String priority;
+	    private String status;
+	    private LocalDateTime createdTimestamp;
+	    private LocalDateTime updatedTimestamp;
+	    private LocalDateTime targetTimestamp;
+	    private int categoryId;
+	    private String categoryName;
+
+	    public ToDoDtoBuilder(String taskName, String description) {
+	        this.taskName = taskName;
+	        this.description = description;
+	    }
+
+	    public ToDoDtoBuilder withTaskId(int taskId) {
+	        this.taskId = taskId;
+	        return this;
+	    }
+	    
+	    public ToDoDtoBuilder withPriority(String priority) {
+	        this.priority = priority;
+	        return this;
+	    }
+
+	    public ToDoDtoBuilder withStatus(String status) {
+	        this.status = status;
+	        return this;
+	    }
+
+	    public ToDoDtoBuilder withCreatedTimestamp(LocalDateTime createdTimestamp) {
+	        this.createdTimestamp = createdTimestamp;
+	        return this;
+	    }
+
+	    public ToDoDtoBuilder withUpdatedTimestamp(LocalDateTime updatedTimestamp) {
+	        this.updatedTimestamp = updatedTimestamp;
+	        return this;
+	    }
+
+	    public ToDoDtoBuilder withTargetTimestamp(LocalDateTime targetTimestamp) {
+	        this.targetTimestamp = targetTimestamp;
+	        return this;
+	    }
+
+	    public ToDoDtoBuilder withCategoryId(int categoryId) {
+	        this.categoryId = categoryId;
+	        return this;
+	    }
+
+	    public ToDoDtoBuilder withCategoryName(String categoryName) {
+	        this.categoryName = categoryName;
+	        return this;
+	    }
+
+	    public ToDoDto build() {
+	        if (taskName == null || description == null) {
+	            throw new IllegalStateException("TaskName and Description are required.");
+	        }
+	        return new ToDoDto(taskId, taskName, description, createdTimestamp, updatedTimestamp, targetTimestamp, priority, status, categoryId, categoryName);
+	    }
+	}
 
 }
