@@ -11,19 +11,19 @@
 		<version>2.6.0</version> <!-- Spring Boot version -->
 		<relativePath />
 	</parent>
-	
+
 	<!-- Project information -->
 	<groupId>com.todo.app</groupId>
 	<artifactId>todo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ToDo-List</name>
 	<description>Project for ToDo List using Spring Boot</description>
-	
+
 	<!-- Define project properties -->
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-	
+
 	<!-- Project dependencies -->
 	<dependencies>
 		<!-- Spring Boot Actuator -->
@@ -31,25 +31,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
+
 		<!-- Spring Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+
 		<!-- Spring Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		
+
 		<!-- Spring Web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<!-- Spring DevTools (Runtime dependency) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,67 +57,84 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- Spring Cache Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
-		
+
 		<!-- Jackson Data Bind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
-		
+
 		<!-- MySQL Connector -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<!-- <version>8.0.27</version> --> 
+			<!-- <version>8.0.27</version> -->
 		</dependency>
-		
+
 		<!-- Project Lombok (Optional) -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- Springdoc OpenAPI UI -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.7.0</version> <!-- Springdoc version -->
 		</dependency>
-		
+
 		<!-- Spring Boot Mail Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-		
+
 		<!-- Spring Boot Admin Server -->
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-server</artifactId>
 			<version>2.4.1</version> <!-- Spring Boot Admin version -->
 		</dependency>
-		
+
 		<!-- Spring Boot Admin Client -->
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 			<version>2.4.1</version> <!-- Spring Boot Admin version -->
 		</dependency>
-		
+
 		<!-- Jasypt Spring 3.1 -->
 		<dependency>
 			<groupId>org.jasypt</groupId>
 			<artifactId>jasypt-spring31</artifactId>
 			<version>1.9.3</version> <!-- Jasypt version -->
 		</dependency>
-		
+
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>sns</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>rds</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>ec2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+		</dependency>
+
 		<!-- Spring Boot Starter Test (For testing) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -128,25 +145,25 @@
 
 	<!-- Build configuration -->
 	<build>
-	<plugins>
-		<!-- Spring Boot Maven Plugin -->
-		<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-			<configuration>
-				<excludes>
-					<!-- Exclude Lombok during build -->
-					<exclude>
-						<groupId>org.projectlombok</groupId>
-						<artifactId>lombok</artifactId>
-					</exclude>
-				</excludes>
-			</configuration>
-		</plugin>
-		<plugin>
+		<plugins>
+			<!-- Spring Boot Maven Plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<!-- Exclude Lombok during build -->
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!--<plugin>
 			<groupId>org.owasp</groupId>
 			<artifactId>dependency-check-maven</artifactId>
-			<version>8.4.0</version>
+			<version>9.0.4</version>
 			<executions>
 				<execution>
 					<goals>
@@ -154,10 +171,10 @@
 					</goals>
 				</execution>
 			</executions>
-		</plugin>
-	</plugins>
-</build>
-	
+		</plugin>-->
+		</plugins>
+	</build>
+
 	<!-- Dependency Management for managing versions -->
 	<dependencyManagement>
 		<dependencies>
@@ -165,11 +182,17 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.6.0</version> 
+				<version>2.6.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.20.80</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

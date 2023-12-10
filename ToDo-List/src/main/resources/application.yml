@@ -41,6 +41,7 @@ spring:
     url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: ${DATABASE_PASSWORD_ENV_VAR}
+#    password: ENC(I0BXUCm0vCiASShRUucwIA==)
     
 # Configure JPA settings for database interaction
   jpa:
