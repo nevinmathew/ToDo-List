@@ -4,6 +4,7 @@
 The ToDo List is a Java-based Spring Boot application that provides functionality for managing ToDo tasks. It allows users to create, retrieve, update, and delete tasks, and also includes features such as task prioritization and categorization.
 
 ## Table of Contents
+- [Languages and Tools](#languages-and-tools)
 - [Features](#features)
 - [Usage](#usage)
 - [Configuration](#configuration)
@@ -12,6 +13,11 @@ The ToDo List is a Java-based Spring Boot application that provides functionalit
   - [OpenAPI (Swagger) Documentation](#openAPI-(swagger)-documentation)
   - [Spring Boot Admin](#spring-boot-admin)
 - [License](#license)
+
+## Languages and Tools
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=spring,mysql,aws,&theme=light" />
+</p>
 
 ## Features
 
