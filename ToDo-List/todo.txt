@@ -10,14 +10,12 @@ externalise configuration from the jar
 
 vector images for todo lists, reminders and the app stored in the s3 bucket
 
-elastic for search functionality - not suitable here x\/
-
 WebAuthn login without password. (research how to get logged in user)
 
 * swagger to show the apis
 
 * actuators and spring boot admin for admin dashboard
 
-use builder ?
+* use builder
 
 * caching
