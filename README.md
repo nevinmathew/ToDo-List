@@ -15,7 +15,7 @@ The ToDo List is a Java-based Spring Boot application that provides functionalit
 - [License](#license)
 
 ## Languages and Tools
-![Spring Boot](https://skillicons.dev/icons?i=spring&theme=light) ![MySql](https://skillicons.dev/icons?i=mysql)! [AWS](https://skillicons.dev/icons?i=aws)
+![Spring Boot](https://skillicons.dev/icons?i=spring&theme=light) ![MySql](https://skillicons.dev/icons?i=mysql) ![AWS](https://skillicons.dev/icons?i=aws)
 
 ## Features
 
